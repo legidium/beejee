@@ -5,8 +5,8 @@ use Core;
 
 class Controller extends Component
 {
-    protected $_view;
-    protected $_viewPath;
+    private $_view;
+    private $_viewPath;
 
     public $id;
     public $action;

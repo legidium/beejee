@@ -6,11 +6,10 @@ use Core;
 
 class Response extends Component
 {
-    protected $_statusCode = 200;
-    protected $_statusText = 'OK';
-
-    protected $_headers = null;
-    protected $_cookies = null;
+    private $_statusCode = 200;
+    private $_statusText = 'OK';
+    private $_headers = null;
+    private $_cookies = null;
 
     public $exitStatus;
     public $isSent;

@@ -8,6 +8,12 @@ class Component
      */
     protected $_application;
 
+    public function __construct($config = [])
+    {
+        $this->configure($config);
+        $this->init();
+    }
+
     /**
      * Initialize the component.
      */

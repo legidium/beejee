@@ -2,14 +2,16 @@
 namespace core\base;
 
 use Core;
+use core\db\Connection;
 
 class Application extends Component
 {
-    protected $_basePath;
-    protected $_viewPath;
-    protected $_layoutPath;
-    protected $_request;
-    protected $_response;
+    private $_basePath;
+    private $_viewPath;
+    private $_layoutPath;
+    private $_request;
+    private $_response;
+    private $_db;
 
     public $controllerNamespace = 'core\\controllers';
     public $defaultRoute = 'default';
@@ -22,7 +24,9 @@ class Application extends Component
     public function __construct($config = [])
     {
         Core::$app = $this;
-        $this->configure($config);
+        $this->bootstrap($config);
+
+        parent::__construct($config);
     }
 
     /**
@@ -134,6 +138,23 @@ class Application extends Component
         $this->_layoutPath = $path;
     }
 
+    /**
+     * @return \core\db\Connection
+     * @throws \Exception
+     */
+    public function getDb()
+    {
+        if ($this->_db === null) {
+            throw new \Exception('Database is not configured');
+        }
+        return $this->_db;
+    }
+
+    public function setDb($db)
+    {
+        $this->_db = $db;
+    }
+
     public function runAction($route, $params)
     {
         // [$controller, $route]
@@ -210,5 +231,16 @@ class Application extends Component
         if (isset($config['viewPath'])) {
             $this->_viewPath = $config['viewPath'];
         }
+
+        if (isset($config['db'])) {
+            $db = new Connection($config['db']);
+            $db->connect();
+            $this->setDb($db);
+        }
+    }
+
+    protected function bootstrap($config = [])
+    {
+
     }
 }
