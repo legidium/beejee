@@ -2,9 +2,7 @@
 
 /* @var $this \core\controllers\AdminController */
 
-$title = 'Панель управления';
-
 ?>
 <div class="admin">
-    <h1>Панель управления</h1>
+    <h1><?= $title ?></h1>
 </div>

@@ -31,6 +31,19 @@ class Response extends Component
         if (headers_sent()) {
             return;
         }
+
+        if ($this->_headers) {
+            foreach ($this->getHeaders() as $name => $values) {
+                $name = str_replace(' ', '-', ucwords(str_replace('-', ' ', $name)));
+                $values = is_array($values) ? $values : [$values];
+                $replace = true;
+                foreach ($values as $value) {
+                    header("$name: $value", $replace);
+                    $replace = false;
+                }
+            }
+        }
+
         $statusCode = $this->_statusCode;
         $statusText = $this->_statusText;
         header("HTTP/1.1 {$statusCode} {$statusText}");
@@ -56,6 +69,19 @@ class Response extends Component
         echo $this->data;
     }
 
+    public function getHeaders()
+    {
+        if ($this->_headers === null) {
+            $this->_headers = [];
+        }
+        return $this->_headers;
+    }
+
+    public function setHeaders($headers)
+    {
+        $this->_headers = $headers;
+    }
+
     public function getCookies()
     {
         return $this->_cookies ? $this->_cookies : [];
@@ -75,5 +101,15 @@ class Response extends Component
     {
         $this->_statusCode = $code;
         $this->_statusText = $text ? $text : '';
+    }
+
+    public function redirect($url, $statusCode = 302)
+    {
+        $headers = $this->getHeaders();
+        if ($this->_headers !== null && is_array($this->_headers)) {
+            $this->_headers['Location'] = $url;
+        }
+        $this->setStatusCode($statusCode);
+        return $this;
     }
 }

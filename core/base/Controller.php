@@ -65,6 +65,11 @@ class Controller extends Component
         return ob_get_clean();
     }
 
+    public function redirect($url, $statusCode = 302)
+    {
+        return Core::$app->getResponse()->redirect($url, $statusCode);
+    }
+
     public function getViewPath()
     {
         if ($this->_viewPath === null) {
