@@ -1,0 +1,8 @@
+.idea/
+bower_components/
+vendor/
+
+phpunit.xml
+composer.lock
+
+
